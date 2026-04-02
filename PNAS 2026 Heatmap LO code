@@ -1,0 +1,97 @@
+```{r}
+library(tidyverse)
+library(magrittr)
+library(pheatmap)
+getwd()
+list.files("../") 
+```
+
+```{r}
+total_tpm_table_dev <- read.table("../Hannah_TPM_normalizedcounts.txt",
+                              header = T,
+                              row.names = 1)
+```
+```{r}
+mygenes_LO_dev <- c("cluster_5194", "cluster_26799", "cluster_8665", "cluster_4084", 
+                       "cluster_11464", "cluster_12366", "cluster_506", "cluster_11146", 
+                       "cluster_14224", "cluster_18041", "cluster_6007", "cluster_1138", "cluster_1063", 
+                       "cluster_29111", "cluster_19655", "cluster_10998", "cluster_10552", 
+                       "cluster_2651", "cluster_6685", "cluster_11050", "cluster_2249", "cluster_876", 
+                       "cluster_5109", "cluster_19245", "cluster_1449", "cluster_2696", "cluster_29119", 
+                       "cluster_9797", "cluster_6686", "cluster_878", "cluster_11106", "cluster_90", 
+                        "cluster_2265", "cluster_29047", "cluster_12763", "cluster_13510", 
+                       "cluster_9538", "cluster_5076", "cluster_29065", "cluster_7118", "cluster_877", "cluster_3955", "cluster_17626")
+
+names(mygenes_LO_dev) <- c("cluster_5194", "cluster_26799", "cluster_8665", "cluster_4084", 
+                       "cluster_11464", "cluster_12366", "cluster_506", "cluster_11146", 
+                       "cluster_14224", "cluster_18041", "cluster_6007", "cluster_1138", "cluster_1063", 
+                       "cluster_29111", "cluster_19655", "cluster_10998", "cluster_10552", 
+                       "cluster_2651", "cluster_6685", "cluster_11050", "cluster_2249", "cluster_876", 
+                       "cluster_5109", "cluster_19245", "cluster_1449", "cluster_2696", "cluster_29119", 
+                       "cluster_9797", "cluster_6686", "cluster_878", "cluster_11106", "cluster_90", 
+                        "cluster_2265", "cluster_29047", "cluster_12763", "cluster_13510", 
+                       "cluster_9538", "cluster_5076", "cluster_29065", "cluster_7118", "cluster_877", "cluster_3955", "cluster_17626")
+
+```
+```{r}
+logical_vector_dev <- row.names(total_tpm_table_dev) %in% names(mygenes_LO_dev)
+mygenes_tpm_table_dev <- total_tpm_table_dev[logical_vector_dev,]
+```
+
+```{r}
+rownames(mygenes_tpm_table_dev) <- mygenes_LO_dev[rownames(mygenes_tpm_table_dev)]
+```
+
+```{r}
+mygenes_tpm_table_norm_dev <- t(scale(t(mygenes_tpm_table_dev)))
+pheatmap::pheatmap(mygenes_tpm_table_norm_dev, cluster_cols = F)
+```
+
+```{r}
+colnames(mygenes_tpm_table_dev)
+```
+
+```{r}
+tpm_to_tibble_dev <- readr::read_delim("../Hannah_TPM_normalizedcounts.txt", delim = " ")
+```
+
+```{r}
+
+total_tpm_df_dev <- tpm_to_tibble_dev %>% 
+  dplyr::transmute(gene_id =gene_id,
+                   
+                   st14 = rowMeans(dplyr::select(., st14_1, st14_2, st14_3)),
+                   st16 = rowMeans(dplyr::select(., st16_1, st16_2, st16_3)),
+                   st18 = rowMeans(dplyr::select(., st18_1, st18_2, st18_3)),
+                   st20 = rowMeans(dplyr::select(., st20_1, st20_2, st20_3)),
+                   st22 = rowMeans(dplyr::select(., st22_1, st22_2, st22_3)),
+                   st24 = rowMeans(dplyr::select(., st24_1, st24_2, st24_3)),
+                   st27 = rowMeans(dplyr::select(., st27_1, st27_2, st27_3)),
+                   st28 = rowMeans(dplyr::select(., st28_1, st28_2, st28_3))
+                   ) %>%
+  as.data.frame()
+
+clust_names_dev <- total_tpm_df_dev$gene_id #total_tpm_df["gene_id"] ou total_tpm_df[1]
+total_tpm_df_dev <- total_tpm_df_dev[-1]
+row.names(total_tpm_df_dev) <- clust_names_dev
+
+```
+
+```{r}
+logical_vector_dev <- row.names(total_tpm_df_dev) %in% names(mygenes_LO_dev)
+mygenes_tpm_df_dev <- total_tpm_df_dev[logical_vector_dev,]
+
+rownames(mygenes_tpm_df_dev) <- mygenes_LO_dev[rownames(mygenes_tpm_df_dev)]
+
+```
+
+```{r}
+mygenes_tpm_norm_df_dev <- t(scale(t(mygenes_tpm_df_dev)))
+pheatmap::pheatmap(mygenes_tpm_norm_df_dev, cluster_cols = F)
+```
+```{r}
+mygenes_tpm_norm_df_dev <- t(scale(t(mygenes_tpm_df_dev)))
+pheatmap::pheatmap(mygenes_tpm_norm_df_dev, 
+                   cluster_cols = FALSE, 
+                   display_numbers = TRUE) 
+```
