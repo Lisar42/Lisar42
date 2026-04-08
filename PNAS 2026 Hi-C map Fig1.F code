@@ -1,0 +1,15 @@
+#This is the code for the Hi-C map of the Fig1.F 
+
+#cluster_14224 (galaxin)
+
+python /scratch/molevo/Simakov/INSTALL/HiCPlotter/HiCPlotter.py -f /scratch/molevo/
+Lisar42/hicplotter/Lisa/iced/40000/Sample1_40000_iced.matrix -o Lachesis_group0 -r 40000 -tri 1 -bed /scratch/
+molevo/Lisar42/hicplotter/Lisa/raw/40000/Sample1_40000_abs.bed -n Lachesis_group0 -chr Lachesis_group0__68_contigs__length_203855924 
+-ptr 1 -hmc 5 -sn 1 -mm 5 -ext pdf -g cluster_14224.bed 
+
+#cluster_876 (HPO)
+
+python /scratch/molevo/Simakov/INSTALL/HiCPlotter/HiCPlotter.py -f /scratch/molevo/
+Lisar42/hicplotter/Lisa/iced/40000/Sample1_40000_iced.matrix -o Lachesis_group5 -r 40000 -tri 1 -bed /scratch/
+molevo/Lisar42/hicplotter/Lisa/raw/40000/Sample1_40000_abs.bed -n Lachesis_group5 -chr Lachesis_group5__70_contigs__length_158228327 
+-ptr 1 -hmc 5 -sn 1 -mm 5 -ext pdf -g cluster_876.bed
