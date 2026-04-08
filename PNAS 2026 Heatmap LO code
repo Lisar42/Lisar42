@@ -1,5 +1,7 @@
+#This is the code for the Fig 1.E 
 #The dataset "Hannah_TPM_normalizedcounts.txt" (transcriptome of Euprymna scolopes embryos, from st14 - st28/ 5d to 19d) 
 is available on the main page of my github profile. 
+
 
 ```{r}
 library(tidyverse)
